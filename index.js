@@ -1,4 +1,5 @@
 var express = require('express')
+var fs = require('fs')
 var app = express()
 const bodyParser = require('body-parser')
 var knex = require('./lib/knex')
@@ -11,6 +12,15 @@ app.post('/login', bodyParser.json(), (req, res) => {
   res.send({
     status: true,
   })
+})
+app.post('/upload', (req, res) => {
+  console.log(req.headers)
+  req.pipe(fs.createWriteStream(req.headers['x-code'] + ".jpg", {
+    flags: 'w',
+    encoding: null,
+    fd: null,
+    mode: 0666
+  }));
 })
 
 app.post('/upload', (req, res) => {
